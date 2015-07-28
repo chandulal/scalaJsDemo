@@ -6,14 +6,42 @@
 </head>
 <body style="margin: 0px">
 
+<div id="weather" class="weatherclass">
+    <span class="weaherspan"></span>
+</div>
+
 <div>
+    <svg style="display: block" id ="svg" width="5000" height="5000"></svg>
     <canvas style="display: block" id="canvas" width="255" height="255"/>
 </div>
 
 <script type="text/javascript" src="../example-fastopt.js"></script>
 <script type="text/javascript" src="/workbench.js"></script>
 <script>
-    example.ScalaJSExample().main(document.getElementById('canvas'));
+      example.Demo().main(document.getElementById('canvas'));
+</script>
+<script type="text/javascript">
+    function drawRect(name,lon,lat,weather,humid,min,max) {
+                var svgns = "http://www.w3.org/2000/svg";
+                svgns.fillStyle="#ffffff"
+                var rect = document.createElementNS(svgns, 'rect');
+                rect.setAttributeNS(null, 'x', lon);
+                rect.setAttributeNS(null, 'y', lat);
+                rect.setAttributeNS(null, 'height', '4');
+                rect.setAttributeNS(null, 'width', '4');
+                rect.setAttributeNS(null, 'fill', '#000000');
+
+                rect.setAttributeNS("http://www.example.com/yourcustomnamespace",'name',name)
+                rect.setAttributeNS("http://www.example.com/yourcustomnamespace",'weather',weather)
+                rect.setAttributeNS("http://www.example.com/yourcustomnamespace",'humid',humid)
+                rect.setAttributeNS("http://www.example.com/yourcustomnamespace",'max',max)
+                rect.setAttributeNS("http://www.example.com/yourcustomnamespace",'min',min)
+                rect.addEventListener("mouseover",mouseOver,false)
+                document.getElementById('svg').appendChild(rect);
+    }
+    function mouseOver(evt) {
+        document.getElementById('weather').innerHTML ='<div><h1>Weather in &nbsp;'+ evt.target.getAttributeNS("http://www.example.com/yourcustomnamespace", 'name') +'</h1><ul><li><b>Weather:</b> &nbsp;'+evt.target.getAttributeNS("http://www.example.com/yourcustomnamespace", 'weather')+'</li><li><b>Humidity:</b> &nbsp;'+evt.target.getAttributeNS("http://www.example.com/yourcustomnamespace", 'humid')+'%</li><li><b>Temp:</b> &nbsp;'+ evt.target.getAttributeNS("http://www.example.com/yourcustomnamespace", 'min') + '-' +evt.target.getAttributeNS("http://www.example.com/yourcustomnamespace", 'max')+'</li></ul></div>'
+    }
 </script>
 </body>
 </html>
