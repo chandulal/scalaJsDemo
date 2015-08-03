@@ -6,10 +6,9 @@ import org.scalajs.dom.html
 import scala.scalajs.js.annotation.JSExport
 import concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
-import js.Dynamic.{global => g}
 
 @JSExport
-object Demo extends {
+object Demo {
 
   @JSExport
   def main(canvas: html.Canvas): Unit = {
@@ -17,44 +16,34 @@ object Demo extends {
     canvas.width = dom.innerWidth
     canvas.height = dom.innerHeight
 
+    val aToV: String = "abcdefghijklmnopqrstuv"
+
     val queries = for {
-      a <- "abcdefghijklmnopqrstuv"
-      b <- "abcdefghijklmnopqrstuv"
-      c <- "abcdefghijklmnopqrstuv"
-    } yield s"$a$b$c"
+      first <- aToV
+      second <- aToV
+      third <- aToV
+    } yield s"$first$second$third"
 
-    var i = 0
+    val queriesItr = Iterator.continually(queries).flatten
 
-    def getStuff(query: String) = {
+    def getLocation(query: String) = {
 
       val url = "http://api.openweathermap.org/data/2.5/" +
         s"find?q=$query&type=like&mode=json"
 
-      Ajax.get(url).foreach { xhr =>
-        val parsed = js.JSON.parse(xhr.responseText)
-        parsed.list.map { (el: js.Dynamic) =>
+      Ajax.get(url).foreach { anyCity =>
+        val parsed = js.JSON.parse(anyCity.responseText)
+        parsed.list.map { (json: js.Dynamic) =>
 
-          val name = el.name.toString
-          val weather = el.weather.pop().main.toString
+          val lon = json.coord.lon.asInstanceOf[Double]
+          val lat = json.coord.lat.asInstanceOf[Double]
 
-          def celsius(kelvins: js.Dynamic) = {
-            kelvins.asInstanceOf[Double] - 273.15
-          }.toInt
-
-          val min = celsius(el.main.temp_min)
-          val max = celsius(el.main.temp_max)
-          val humid = el.main.humidity.toString
-          val lon = el.coord.lon.asInstanceOf[Double]
-          val lat = el.coord.lat.asInstanceOf[Double]
-
-          val lon2 = (lon + 180) / 360 * canvas.width
-          val lat2 = canvas.height - (lat + 90) / 180 * canvas.height
-          g.drawRect(name, lon2, lat2, weather, humid, min, max)
+          val pixelX = (lon + 180) / 360 * canvas.width
+          val pixelY = canvas.height - (lat + 90) / 180 * canvas.height
+          SVGBlock.drawRect(lon,lat,pixelX, pixelY)
         }
-        dom.console.log(parsed)
       }
-      i += 1
     }
-    dom.setInterval(() => getStuff(queries(i % queries.length)), 50)
+    dom.setInterval(() => getLocation(queriesItr.next()), 50)
   }
 }
