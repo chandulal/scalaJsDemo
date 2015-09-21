@@ -7,12 +7,12 @@ import org.scalajs.dom.ext.Ajax
 import scala.scalajs.js
 
 object SVGBlock {
-  def drawRect(lon: Double,lat: Double, x: Double, y: Double) {
+  def drawRect(attr: Attributes) {
     val rectangle = dom.document.createElementNS("http://www.w3.org/2000/svg", "rect")
-    rectangle.setAttributeNS(null, "x", x.toString)
-    rectangle.setAttributeNS(null, "y", y.toString)
-    rectangle.setAttributeNS("mynamespace", "lon", lon.toString)
-    rectangle.setAttributeNS("mynamespace", "lat", lat.toString)
+    rectangle.setAttributeNS(null, "x", attr.pixelX.toString)
+    rectangle.setAttributeNS(null, "y", attr.pixelY.toString)
+    rectangle.setAttributeNS("mynamespace", "lon", attr.lon.toString)
+    rectangle.setAttributeNS("mynamespace", "lat", attr.lat.toString)
     rectangle.setAttributeNS(null, "height", "4")
     rectangle.setAttributeNS(null, "width", "4")
     rectangle.setAttributeNS(null, "fill", "#000000")
