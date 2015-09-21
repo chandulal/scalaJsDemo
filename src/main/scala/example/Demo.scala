@@ -28,8 +28,7 @@ object Demo {
 
     def getLocation(query: String) = {
 
-      val url = "http://api.openweathermap.org/data/2.5/" +
-        s"find?q=$query&type=like&mode=json"
+      val url = "http://api.openweathermap.org/data/2.5/find?q=$query&type=like&mode=json"
 
       Ajax.get(url).foreach { anyCity =>
         val parsed = js.JSON.parse(anyCity.responseText)

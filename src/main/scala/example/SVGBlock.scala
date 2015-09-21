@@ -18,7 +18,7 @@ object SVGBlock {
     rectangle.setAttributeNS(null, "fill", "#000000")
 
     rectangle.addEventListener("mouseover",mouseOver)
-    dom.document.getElementById("svg").appendChild(rectangle);
+    dom.document.getElementById("svg").appendChild(rectangle)
   }
   val mouseOver = { evt: Event =>
     val lat = evt.srcElement.getAttributeNS("mynamespace", "lat")
