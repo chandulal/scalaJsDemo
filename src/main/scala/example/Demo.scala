@@ -21,7 +21,7 @@ object Demo {
 
   private def getWeatherAndPlotOnUi(query: String, canvas: html.Canvas) = {
     val url = s"http://api.openweathermap.org/data/2.5/find?q=${query}&type=like&mode=json"
-    Ajax.get(url).foreach { anyCity =>
+    Ajax.get(url).map { anyCity =>
       val parsed = js.JSON.parse(anyCity.responseText)
       parsed.list.map { (json: js.Dynamic) =>
         val attributes = getAttributes(canvas, json)

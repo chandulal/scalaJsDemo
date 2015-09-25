@@ -11,14 +11,19 @@ object SVGBlock {
     val rectangle = dom.document.createElementNS("http://www.w3.org/2000/svg", "rect")
     val updatedRectangle = updateWithAttributes(attr, rectangle)
     rectangle.addEventListener("mouseover",mouseOver)
+    rectangle.addEventListener("mouseout",onMouseOut)
     dom.document.getElementById("svg").appendChild(updatedRectangle)
   }
 
   val mouseOver = { evt: Event =>
+    evt.srcElement.setAttributeNS(null, "fill", "#FF0000")
     val lat = evt.srcElement.getAttributeNS("mynamespace", "lat")
     val lon = evt.srcElement.getAttributeNS("mynamespace", "lon")
     dom.console.log("lat "+lat+"lon "+lon)
     Controls.viewWeather(lat.toDouble,lon.toDouble)
+  }
+  val onMouseOut = { evt: Event =>
+    evt.srcElement.setAttributeNS(null, "fill", "#000000")
   }
 
   private def updateWithAttributes(attr: Attributes, rectangle: Element): Element = {
