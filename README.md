@@ -45,3 +45,7 @@ The `mapper` branch contains an application that renders a heat map of the earth
 ## Autowire
 
 The `autowire` branch contains a small sample client-server application, using Scala.js on the client and Spray on the server. The readme on that branch contains instructions on how to run it.
+
+## to run demo
+
+http://localhost:12345/target/scala-2.11/classes/index-dev.html

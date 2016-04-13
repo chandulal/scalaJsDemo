@@ -1,4 +1,4 @@
-package example
+package demo
 import org.scalajs.dom
 import org.scalajs.dom._
 import org.scalajs.dom.ext.Ajax
